@@ -2,8 +2,8 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 
 public class Teste {
@@ -27,11 +27,11 @@ public class Teste {
                         .body()
                         .path("data.email");
         Assert.assertEquals("michael.lawson@reqres.in", email);
-
-
     }
+
     @Test
-    public void  testPost() {
+    public void  testPost()
+    {
       String nome =  given().
                 body("{\n" +
                         "    \"name\": \"morpheus\",\n" +
@@ -49,7 +49,8 @@ public class Teste {
     }
 
     @Test
-    public void  testPost1() {
+    public void  testPost1()
+    {
         String email =  given().
                 body("\"email\": \"eve.holt@reqres.in\",\n" +
                         "    \"password\": \"pistol\"").
@@ -83,13 +84,11 @@ public class Teste {
                 .body()
                 .path("data.email");
         Assert.assertEquals("janet.weaver@reqres.in", email);
-
     }
 
     @Test
     public void  testGet2()
     {
-
         given().
                 param("id","2").
                 param("email","janet.weaver@reqres.in").
@@ -102,9 +101,8 @@ public class Teste {
 
                 then().
                 statusCode(200).
-                body("results[0].data", Matchers.equalTo("2"));
-
-
+                body("data.id", equalTo(2)).
+                body("data.email", equalTo("janet.weaver@reqres.in"));
 
 
     }
