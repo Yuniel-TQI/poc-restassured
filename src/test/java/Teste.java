@@ -3,7 +3,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 
 
 public class Teste {
@@ -88,18 +88,14 @@ public class Teste {
     @Test
     public void  testPost3()
     {
-        String nome =  given().
+       given().
                 body("{\"id\": 4,\n" +
                         "    \"token\": \"QpwL5tke4Pnpja7X4\"}").
                 when().
-                post("https://reqres.in/api/register").
+                post("https://reqres.in/api/register/2").
                 then()
-                .assertThat()
-                .statusCode(400)
-                .extract()
-                .body()
-                .path("id");
-        Assert.assertEquals("id", "4");
+                .statusCode(201)
+                .body("id", notNullValue());
     }
 
     @Test
