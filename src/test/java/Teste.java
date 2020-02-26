@@ -66,6 +66,42 @@ public class Teste {
     }
 
     @Test
+    public void  testPost2()
+    {
+        String nome =  given().
+                body("{\"name\": \"morpheus\",\n" +
+                        "    \"job\": \"leader\",\n" +
+                        "    \"id\": \"206\",\n" +
+                        "    \"createdAt\": \"2020-02-26T18:16:06.906Z\"}").
+                when().
+                post("https://reqres.in/api/users").
+                then()
+                .assertThat()
+                .statusCode(201)
+                .extract()
+                .body()
+                .path("createdAt");
+        Assert.assertEquals("createdAt", "2020-02-26T18:16:06.906Z");
+    }
+
+    @Test
+    public void  testPost3()
+    {
+        String nome =  given().
+                body("{\"id\": 4,\n" +
+                        "    \"token\": \"QpwL5tke4Pnpja7X4\"}").
+                when().
+                post("https://reqres.in/api/register").
+                then()
+                .assertThat()
+                .statusCode(400)
+                .extract()
+                .body()
+                .path("id");
+        Assert.assertEquals("id", "4");
+    }
+
+    @Test
     public void  testGet1()
     {
         String email =  given().
@@ -102,8 +138,8 @@ public class Teste {
                 then().
                 statusCode(200).
                 body("data.id", equalTo(2)).
-                body("data.email", equalTo("janet.weaver@reqres.in"));
-
-
+                body("data.email", equalTo("janet.weaver@reqres.in")).
+                body("data.first_name", equalTo("Janet"));
     }
+
 }
