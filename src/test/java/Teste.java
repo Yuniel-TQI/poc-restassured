@@ -1,3 +1,5 @@
+import io.restassured.http.ContentType;
+import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -84,7 +86,6 @@ public class Teste {
         Assert.assertEquals("createdAt", "2020-02-26T18:16:06.906Z");
     }
 
-
     @Test
     public void  testPost3()
     {
@@ -96,6 +97,24 @@ public class Teste {
                 then()
                 .statusCode(201)
                 .body("id", notNullValue());
+    }
+
+    @Test
+    public void  testPut()
+    {
+        String nome = given().
+                body("{\"name\": \"morpheus\",\n" +
+                        "    \"job\": \"zion resident\",\n" +
+                        "    \"updatedAt\": \"2020-02-27T11:56:42.254Z\"}").
+                when().
+                put("https://reqres.in/api/users/2").
+                then()
+                .assertThat()
+                .statusCode(200)
+            .extract()
+            .body()
+            .path("updatedAt");
+        Assert.assertEquals("2020-02-27T11:56:42.254Z", nome);
     }
 
     @Test
