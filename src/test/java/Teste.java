@@ -204,12 +204,12 @@ public class Teste {
 
                 when().
                 get( "https://reqres.in/api/users/2").
-
                 then().
                 statusCode(200).
                 body("data.id", equalTo(2)).
                 body("data.email", equalTo("janet.weaver@reqres.in")).
-                body("data.first_name", equalTo("Janet"));
+                body("data.first_name", equalTo("Janet")).
+                body("data.last_name", equalTo("Weaver"));
     }
 
 }
