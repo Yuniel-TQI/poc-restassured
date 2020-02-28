@@ -1,11 +1,10 @@
-import io.restassured.http.ContentType;
-import jdk.nashorn.internal.runtime.JSONFunctions;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
+
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.*;
+import org.json.simple.JSONObject;
 
 
 public class Teste {
@@ -97,6 +96,61 @@ public class Teste {
                 then()
                 .statusCode(201)
                 .body("id", notNullValue());
+    }
+
+    @Test
+    public void postUserTest(){
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("name", "Rafael");
+        requestParams.put("job", "QA");
+
+        given().
+                body(requestParams.toJSONString()).
+                when().
+                post("https://reqres.in/api/users").
+                then().
+                statusCode(201).
+                body(containsString("createdAt"));
+    }
+
+    @Test
+    public void putUserTest(){
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("name", "Rafael A.");
+        requestParams.put("job", "QA/DEV");
+
+        given().
+                body(requestParams.toJSONString()).
+                when().
+                put("https://reqres.in/api/users" + "/2").
+                then().
+                statusCode(200).
+                body(containsString("updatedAt"));
+    }
+
+    @Test
+    public void deleteUserTest(){
+        when().
+                delete("https://reqres.in/api/users" + "/2").
+                then()
+                .statusCode(204);
+    }
+
+    @Test
+    public void getPageOneTest(){
+        given().
+                param("page", "1").
+                when().
+                get("https://reqres.in/api/users").
+                then().
+                statusCode(200).
+                body("page", equalTo(1));
+    }
+
+    @Test
+    public void getUserTest() {
+        when().
+                get("https://reqres.in/api/users" + "/2").then().body("data.id", equalTo(2));
     }
 
     @Test
